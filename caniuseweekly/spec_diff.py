@@ -1,0 +1,3 @@
+import collections
+
+class SpecDiff(
