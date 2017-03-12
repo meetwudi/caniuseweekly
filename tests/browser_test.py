@@ -1,5 +1,4 @@
 from caniuseweekly.browser import BrowserName
-from caniuseweekly.browser import Browser
 
 
 def test_all_code_friendly_names():

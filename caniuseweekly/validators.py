@@ -1,7 +1,9 @@
 import attr
 
+
 class DictValidatorKeypathDoesNotExistError(Exception):
     pass
+
 
 @attr.s
 class _DictValidator():
@@ -33,4 +35,3 @@ class _DictValidator():
 
 def dict_validator(required_keypaths):
     return _DictValidator(required_keypaths)
-
