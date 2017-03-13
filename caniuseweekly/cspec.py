@@ -4,6 +4,7 @@ import attr
 
 from caniuseweekly.browser import Browser
 from caniuseweekly.browser import BrowserName
+from caniuseweekly.cspec_diff import CSpecDiff
 from caniuseweekly.validators import dict_validator
 
 
@@ -50,14 +51,16 @@ class CSpecBug():
 
 @attr.s
 class CSpec():
-    """A Caniuse Specification of a browser. An CSpec would include features
-    supported by a certain browser according to Caniuse.com.
+    """A Caniuse Specification of a feature.
     """
     bugs = attr.ib(validator=attr.validators.instance_of(list))
     browser = attr.ib(validator=attr.validators.instance_of(Browser))
     categories = attr.ib(validator=attr.validators.instance_of(list))
     description = attr.ib(validator=attr.validators.instance_of(str))
     spec_url = attr.ib(validator=attr.validators.instance_of(str))
-    specs = attr.ib(validator=dict_validator(
+    stats = attr.ib(validator=dict_validator(
         BrowserName.all_code_friendly_names()))
     title = attr.ib(validator=attr.validators.instance_of(str))
+
+    def __sub__(self, other):
+        return CSpecDiff.create(self, other)
