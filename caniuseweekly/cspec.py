@@ -3,7 +3,6 @@ import enum
 import attr
 
 from caniuseweekly.browser import Browser
-from caniuseweekly.browser import BrowserName
 from caniuseweekly.cspec_diff import CSpecDiff
 from caniuseweekly.validators import dict_validator
 
@@ -45,21 +44,15 @@ class CSpecStat(enum.Enum):
 
 
 @attr.s
-class CSpecBug():
-    description = attr.ib(validator=attr.validators.instance_of(str))
-
-
-@attr.s
 class CSpec():
     """A Caniuse Specification of a feature.
     """
     bugs = attr.ib(validator=attr.validators.instance_of(list))
-    browser = attr.ib(validator=attr.validators.instance_of(Browser))
     categories = attr.ib(validator=attr.validators.instance_of(list))
     description = attr.ib(validator=attr.validators.instance_of(str))
-    spec_url = attr.ib(validator=attr.validators.instance_of(str))
+    spec = attr.ib(validator=attr.validators.instance_of(str))
     stats = attr.ib(validator=dict_validator(
-        BrowserName.all_code_friendly_names()))
+        Browser.all_code_friendly_names()))
     title = attr.ib(validator=attr.validators.instance_of(str))
 
     def __sub__(self, other):
