@@ -1,3 +1,5 @@
+import pytest
+
 from caniuseweekly.cspec_loader import cspec_from_feature_json
 from testing.constants import EXAMPLE_FEATURE_JSON_PATH
 
@@ -9,4 +11,7 @@ def test_load_feature_json():
         assert cspec.title == 'CSS Grid Layout'
         assert len(cspec.bugs) == 2
         assert 'Method of using a grid' in cspec.description
+        # stats is immutable
+        with pytest.raises(Exception):
+            cspec.stats['a'] = 1
         f.close()

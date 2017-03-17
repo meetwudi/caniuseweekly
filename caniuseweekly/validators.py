@@ -1,3 +1,5 @@
+from types import MappingProxyType
+
 import attr
 
 
@@ -10,9 +12,11 @@ class _DictValidator():
     required_keypaths = attr.ib(validator=attr.validators.instance_of(list))
 
     def __call__(self, inst, attr, value):
-        if not isinstance(value, dict):
+        if not isinstance(value, dict) and \
+                not isinstance(value, MappingProxyType):
             raise TypeError(
-                "'{name}' must be a dict object.".format(
+                """'{name}' must be a dict object or
+                instance of MappingProxyType.""".format(
                     name=attr.name,
                 ),
             )
