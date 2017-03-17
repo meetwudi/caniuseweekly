@@ -1,4 +1,5 @@
 import json
+from types import MappingProxyType
 
 from caniuseweekly.cspec import CSpec
 
@@ -21,5 +22,9 @@ def cspec_from_feature_json(feature_json):
     ]
     for key in direct_mapping_names:
         cspec_kwargs[key] = raw[key]
+
+    # stats is a relatively complex dict, we should prevent it
+    # from being mutated
+    cspec_kwargs['stats'] = MappingProxyType(cspec_kwargs['stats'])
 
     return CSpec(**cspec_kwargs)
