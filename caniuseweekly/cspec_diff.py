@@ -14,6 +14,7 @@ def calculate_stat_add(latest_spec, previous_spec):
             set(previous_spec_stats.keys())
         if not new_versions:
             continue
+        # usually there will only be one new version
         new_stats = {
             version: latest_spec_stats[version]
             for version in new_versions
