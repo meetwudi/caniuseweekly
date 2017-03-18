@@ -1,0 +1,3 @@
+[submodule "submodules/caniuseweekly-template"]
+	path = submodules/caniuseweekly-template
+	url = git@github.com:tjwudi/caniuseweekly-template.git
