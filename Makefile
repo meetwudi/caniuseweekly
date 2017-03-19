@@ -3,4 +3,4 @@
 all: test
 
 test:
-	PYTHONPATH=. pytest
+	PYTHONPATH=. pytest tests/
