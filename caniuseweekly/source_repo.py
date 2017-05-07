@@ -49,12 +49,8 @@ def get_source_repo():
     return git.Repo(source_repo_path())
 
 
-def get_latest_sha(repo):
-    raise NotImplementedError()
-
-
 def get_file_content_by_sha(repo, sha, filepath):
-    raise NotImplementedError()
+    return repo.git.show('{}:{}'.format(sha, filepath))
 
 
 def feature_json_files(repo):
