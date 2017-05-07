@@ -47,10 +47,23 @@ class CSpecDiff():
     """Difference between two Spec instances.
     """
     stat_add = attr.ib(validator=attr.validators.instance_of(list))
-    spec_change = attr.ib(validator=attr.validators.instance_of(list))
+    latest_cspec = attr.ib()
 
     @classmethod
     def create(cls, latest_cspec, previous_cspec):
         return cls(
             stat_add=calculate_stat_add(latest_cspec, previous_cspec),
+            latest_cspec=latest_cspec,
         )
+
+    @property
+    def title(self):
+        return self.latest_cspec.title
+
+    @property
+    def description(self):
+        return self.latest_cspec.description
+
+    @property
+    def spec(self):
+        return self.latest_cspec.spec

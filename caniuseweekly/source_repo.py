@@ -47,3 +47,16 @@ def create_repo_if_does_not_exist():
 def get_source_repo():
     create_repo_if_does_not_exist()
     return git.Repo(source_repo_path())
+
+
+def get_latest_sha(repo):
+    raise NotImplementedError()
+
+
+def get_file_content_by_sha(repo, sha, filepath):
+    raise NotImplementedError()
+
+
+def feature_json_files(repo):
+    yield None
+    raise NotImplementedError

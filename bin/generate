@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+from caniuseweekly.issue import make_issue
+
+if __name__ == '__main__':
+    make_issue()
