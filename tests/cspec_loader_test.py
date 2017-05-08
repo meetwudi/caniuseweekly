@@ -25,7 +25,10 @@ def test_load_feature_json():
 
 
 def test_feature_json_files():
-    filenames = ['feature1.json, feature2.json, feature3.json']
+    all_files = ['feature1.json', 'feature2.json',
+                 'feature3.json', 'random.bin']
+    json_filenames = list(
+        filter(lambda filename: filename.endswith('.json'), all_files))
     with ExitStack() as stack:
         tempdir = tempfile.TemporaryDirectory()
         stack.enter_context(tempdir)
@@ -34,6 +37,6 @@ def test_feature_json_files():
             return_value=tempdir.name,
         ))
         os.mkdir(os.path.join(tempdir.name, 'features-json'))
-        for filename in filenames:
+        for filename in all_files:
             Path(os.path.join(tempdir.name, 'features-json', filename)).touch()
-        assert feature_json_files() == filenames
+        assert list(feature_json_files()) == json_filenames

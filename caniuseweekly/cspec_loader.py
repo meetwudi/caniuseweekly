@@ -37,4 +37,7 @@ def feature_json_files():
         source_repo_path(),
         'features-json',
     )
-    return os.listdir(feature_json_dir)
+    return filter(
+        lambda filename: filename.endswith('.json'),
+        os.listdir(feature_json_dir),
+    )
