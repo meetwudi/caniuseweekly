@@ -51,8 +51,3 @@ def get_source_repo():
 
 def get_file_content_by_sha(repo, sha, filepath):
     return repo.git.show('{}:{}'.format(sha, filepath))
-
-
-def feature_json_files(repo):
-    yield None
-    raise NotImplementedError

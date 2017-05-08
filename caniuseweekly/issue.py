@@ -3,9 +3,8 @@ import attr
 from caniuseweekly.appconfig import appconfig
 from caniuseweekly.cspec_diff import CSpecDiff
 from caniuseweekly.cspec_loader import cspec_from_feature_json
-from caniuseweekly.source_repo import feature_json_files
+from caniuseweekly.cspec_loader import feature_json_files
 from caniuseweekly.source_repo import get_file_content_by_sha
-from caniuseweekly.source_repo import get_latest_sha
 from caniuseweekly.source_repo import get_source_repo
 
 
@@ -27,7 +26,7 @@ def make_issue(previous_sha=None, current_sha=None):
     if previous_sha is None:
         previous_sha = default_previous_sha()
     if current_sha is None:
-        current_sha = get_latest_sha(repo)
+        current_sha = str(repo.heads.master.commit)
 
     previous_feature_json_names = feature_json_files(
         repo=repo,

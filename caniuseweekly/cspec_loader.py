@@ -1,7 +1,9 @@
 import json
+import os
 from types import MappingProxyType
 
 from caniuseweekly.cspec import CSpec
+from caniuseweekly.source_repo import source_repo_path
 
 
 def cspec_from_feature_json(feature_json):
@@ -28,3 +30,11 @@ def cspec_from_feature_json(feature_json):
     cspec_kwargs['stats'] = MappingProxyType(cspec_kwargs['stats'])
 
     return CSpec(**cspec_kwargs)
+
+
+def feature_json_files():
+    feature_json_dir = os.path.join(
+        source_repo_path(),
+        'features-json',
+    )
+    return os.listdir(feature_json_dir)
