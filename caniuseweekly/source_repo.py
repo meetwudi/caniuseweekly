@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+from contextlib import contextmanager
 
 import git
 
@@ -10,6 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 class GitCloneError(Exception):
+    pass
+
+
+class RepoIsDirtyError(Exception):
     pass
 
 
@@ -51,3 +56,26 @@ def get_source_repo():
 
 def get_file_content_by_sha(repo, sha, filepath):
     return repo.git.show('{}:{}'.format(sha, filepath))
+
+
+@contextmanager
+def checkout_and_exit_clean(repo, sha):
+    """Checkout to a commit with specific SHA and checkout back the previous
+    branch.
+    """
+    # current working directory must be clean
+    if repo.is_dirty():
+        raise RepoIsDirtyError()
+
+    # save current ref's SHA
+    saved_head_commit_sha = str(repo.head.object)
+
+    repo.git.checkout(sha)
+    yield
+
+    # repo should be clean at this point as well
+    if repo.is_dirty():
+        raise RepoIsDirtyError()
+
+    # switch back to previous commit
+    repo.git.checkout(saved_head_commit_sha)

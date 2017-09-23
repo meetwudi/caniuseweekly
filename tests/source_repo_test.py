@@ -5,6 +5,7 @@ from unittest import mock
 import git
 import pytest
 
+from caniuseweekly.source_repo import checkout_and_exit_clean
 from caniuseweekly.source_repo import create_repo_if_does_not_exist
 from caniuseweekly.source_repo import get_file_content_by_sha
 from caniuseweekly.source_repo import GitCloneError
@@ -67,3 +68,28 @@ def test_get_file_content_by_sha():
         with pytest.raises(git.exc.GitCommandError) as exc_info:
             get_file_content_by_sha(repo, 'abcdef', filename)
             assert "Invalid object name 'abcdef'" in str(exc_info)
+
+
+@pytest.mark.parametrize('from_commit_index', range(3))
+@pytest.mark.parametrize('to_commit_index', range(3))
+def test_checkout_and_exit_clean(from_commit_index, to_commit_index):
+    content_revisions = [
+        'abc',
+        'def',
+        'geh',
+    ]
+    commits = []
+    filename = 'testfile'
+    with tempfile.TemporaryDirectory() as tempdirname:
+        repo = git.Repo.init(tempdirname)
+        for content_revision in content_revisions:
+            with open(os.path.join(tempdirname, filename), 'w') as fp:
+                fp.write(content_revision)
+            repo.index.add([filename])
+            commits.append(repo.index.commit('New Commit'))
+        repo.git.checkout(str(commits[from_commit_index]))
+        with checkout_and_exit_clean(repo, str(commits[to_commit_index])), \
+                open(os.path.join(tempdirname, filename), 'r') as fp:
+            assert fp.read() == content_revisions[to_commit_index]
+        with open(os.path.join(tempdirname, filename), 'r') as fp:
+            assert fp.read() == content_revisions[from_commit_index]
